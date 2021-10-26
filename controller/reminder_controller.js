@@ -41,7 +41,15 @@ let remindersController = {
   },
 
   update: (req, res) => {
-    // implement this code
+    const reminderToFind = req.params.id;
+    const updatedReminder = req.body;
+
+    updatedReminder.id = reminderToFind;
+    
+    database.cindy.reminders.pop(reminderToFind);
+    database.cindy.reminders.push(updatedReminder);
+
+    res.render("reminder/single-reminder", { reminderItem: updatedReminder })
   },
 
   delete: (req, res) => {
