@@ -1,12 +1,12 @@
-#Sprint 1:
-###Adel Kuanysheva
+# Sprint 1:
+### Adel Kuanysheva
 1.
 2.
 
-###Bosco Chan
+### Bosco Chan
 1.
 2.
 
-###Jeremy Lam
+### Jeremy Lam
 1.
 2.
