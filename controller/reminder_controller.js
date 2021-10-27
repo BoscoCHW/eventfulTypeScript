@@ -41,20 +41,20 @@ let remindersController = {
   },
 
   update: (req, res) => {
-    const reminderToFind = req.params.id;
-    const updatedReminder = req.body;
 
-    updatedReminder.id = reminderToFind;
+    const reminderID = Number(req.params.id);
+    const updatedReminder = Object.assign({id: reminderID}, req.body);
+    updatedReminder.completed = (updatedReminder.completed === "true")
     
-    database.cindy.reminders.pop(reminderToFind);
-    database.cindy.reminders.push(updatedReminder);
+    const reminderIndex = database.cindy.reminders.findIndex(reminder => reminder.id === reminderID)
+    database.cindy.reminders.splice(reminderIndex, 1, updatedReminder);
 
-    res.render("reminder/single-reminder", { reminderItem: updatedReminder })
+    res.redirect("/reminder/" + reminderID);
   },
 
   delete: (req, res) => {
-    let reminderToFind = req.params.id;
-    database.cindy.reminders.pop(reminderToFind);
+    const reminderToFind = Number(req.params.id);
+    database.cindy.reminders = database.cindy.reminders.filter(reminder => reminder.id !== reminderToFind);
     res.redirect("/reminders");
   },
 };
