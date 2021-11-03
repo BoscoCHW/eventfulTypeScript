@@ -15,7 +15,7 @@
 
 # Sprint 2 - Nov 9, 2021:
 ### Adel Kuanysheva
-1.
+1. GitHub implementation 
 2.
 
 ### Bosco Chan

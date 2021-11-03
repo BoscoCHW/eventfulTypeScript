@@ -4,6 +4,7 @@ const path = require("path");
 const ejsLayouts = require("express-ejs-layouts");
 const reminderController = require("./controller/reminder_controller");
 const authController = require("./controller/auth_controller");
+const session = require('express-session');
 
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -36,6 +37,31 @@ app.get("/register", authController.register);
 app.get("/login", authController.login);
 app.post("/register", authController.registerSubmit);
 app.post("/login", authController.loginSubmit);
+
+// Authorization
+const passport = require("./middleware/passport");
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.get('/auth/github',
+  passport.authenticate('github', { scope: [ 'user:email' ] }));
+
+app.get('/auth/github/callback', 
+  passport.authenticate('github', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/dashboard');
+  });
+
+app.get('/dashboard', function(req, res){
+  res.render('./reminder/dashboard', { user: req.user });
+});
+
+app.get('/auth/logout', function(req, res){
+  req.logout();
+  res.redirect('/login');
+});
 
 app.listen(3001, function () {
   console.log(
