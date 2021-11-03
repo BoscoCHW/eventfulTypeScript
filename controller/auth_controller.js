@@ -16,6 +16,15 @@ let authController = {
   registerSubmit: (req, res) => {
     // implement
   },
+
+  home: (req, res) => {
+    res.render('./reminder/dashboard', { user: req.user.username });
+  }, 
+
+  logout: (req, res) => {
+    req.logout();
+    res.redirect('/login');
+  }
 };
 
 module.exports = authController;

@@ -40,28 +40,19 @@ app.post("/login", authController.loginSubmit);
 
 // Authorization
 const passport = require("./middleware/passport");
-
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.get('/auth/github',
   passport.authenticate('github', { scope: [ 'user:email' ] }));
-
 app.get('/auth/github/callback', 
   passport.authenticate('github', { failureRedirect: '/login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/dashboard');
-  });
+  authController.home
+  );
 
-app.get('/dashboard', function(req, res){
-  res.render('./reminder/dashboard', { user: req.user });
-});
+app.get('/dashboard', authController.home);
+app.get('/auth/logout', authController.logout);
 
-app.get('/auth/logout', function(req, res){
-  req.logout();
-  res.redirect('/login');
-});
 
 app.listen(3001, function () {
   console.log(
