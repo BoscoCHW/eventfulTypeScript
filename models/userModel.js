@@ -15,11 +15,20 @@ const userModel = {
       throw new Error(`Couldn't find user with id: ${id}`);
     },
     addOne: (email, password) => {
-        let newUser = {
+        const newUser = {
             id: database.length + 1,
             reminders: [],
             email,
             password
+        };
+        database.push(newUser);
+        return newUser
+    },
+    addOneWithIdAndUsername: (id, username) => {
+        const newUser = {
+            id,
+            username,
+            reminders: []
         };
         database.push(newUser);
         return newUser

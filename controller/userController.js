@@ -1,5 +1,14 @@
 const userModel = require("../models/userModel").userModel;
 
+const findOrCreateHithubUser = (id, username) => {
+  const user = getUserById(id);
+  if (user) {
+    return user;
+  } else {
+    return userModel.addOneWithIdAndUsername(id, username);
+  }
+}
+
 const getUserByEmailIdAndPassword = (email, password) => {
   let user = userModel.findOne(email);
   if (user) {
@@ -10,11 +19,14 @@ const getUserByEmailIdAndPassword = (email, password) => {
   return null;
 };
 const getUserById = (id) => {
-  let user = userModel.findById(id);
-  if (user) {
-    return user;
+  let user
+  try {
+    user = userModel.findById(id);
+  } catch (e) {
+    console.log(e)
+    return null
   }
-  return null;
+  return user;
 };
 
 function isUserValid(user, password) {
@@ -22,6 +34,7 @@ function isUserValid(user, password) {
 }
 
 module.exports = {
+  findOrCreateHithubUser,
   getUserByEmailIdAndPassword,
   getUserById,
 };

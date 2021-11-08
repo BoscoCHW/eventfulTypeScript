@@ -1,4 +1,4 @@
-const dotenv = require('dotenv').config()
+require('dotenv').config()
 const GitHubStrategy = require('passport-github2').Strategy;
 const LocalStrategy = require("passport-local").Strategy;
 const passport = require('passport');
@@ -9,6 +9,7 @@ const localLogin = new LocalStrategy(
     usernameField: "email",
     passwordField: "password",
   },
+
   (email, password, done) => {
     const user = userController.getUserByEmailIdAndPassword(email, password);
     return user
@@ -27,19 +28,24 @@ const githubStrategy = new GitHubStrategy(
   },
 
   function(accessToken, refreshToken, profile, done) {
-    return done(null, profile);
+    const user = userController.findOrCreateHithubUser(profile.id, profile.username);
+    return done(null, user);
   }
 )
 
 passport.use(localLogin).use(githubStrategy);
 
 passport.serializeUser(function (user, done) {
-  done(null, user);
+  done(null, user.id);
 });
 
-passport.deserializeUser(function (user, done) {
-  done(null, user);
-
+passport.deserializeUser(function (userId, done) {
+  const user = userController.getUserById(userId);
+  if (user) {
+    done(null, user);
+  } else {
+    done({ message: "User not found" }, null);
+  }
 });
 
 module.exports = passport;
