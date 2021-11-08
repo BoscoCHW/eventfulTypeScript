@@ -1,0 +1,18 @@
+<div class="container">
+    <h1 class="page-header">Dashboard</h1>
+  
+    <p>Welcome <%= user.name %></p>
+
+    <p> Current Active Sessions </p>
+    <ul>
+        <% sessions.forEach(session => { %>
+            <li>
+                <p> SessionID: <%= session.id %> </p>
+                <p> UserID: <%= session.userId %></p> 
+                <a href=<%= `/revokeSession/${session.id}` %>> Revoke Session </a>
+            </li>
+        <% }) %>
+
+    </ul>
+    
+  </div>
