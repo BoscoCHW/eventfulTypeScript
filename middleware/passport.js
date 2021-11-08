@@ -1,26 +1,45 @@
 const dotenv = require('dotenv').config()
 const GitHubStrategy = require('passport-github2').Strategy;
-const session = require('express-session');
+const LocalStrategy = require("passport-local").Strategy;
 const passport = require('passport');
+const userController = require("../controller/userController");
 
-
-passport.use(new GitHubStrategy({
-    clientID: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "http://localhost:3001/auth/github/callback"
+const localLogin = new LocalStrategy(
+  {
+    usernameField: "email",
+    passwordField: "password",
   },
-  function(accessToken, refreshToken, profile, done) {
-    return done(null, profile);
-    }
-  )
+  (email, password, done) => {
+    const user = userController.getUserByEmailIdAndPassword(email, password);
+    return user
+      ? done(null, user)
+      : done(null, false, {
+          message: "Your login details are not valid. Please try again",
+        });
+  }
 );
 
-passport.serializeUser(function(user, done) {
+const githubStrategy = new GitHubStrategy(
+  {
+  clientID: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET,
+  callbackURL: "http://localhost:3001/auth/github/callback"
+  },
+
+  function(accessToken, refreshToken, profile, done) {
+    return done(null, profile);
+  }
+)
+
+passport.use(localLogin).use(githubStrategy);
+
+passport.serializeUser(function (user, done) {
   done(null, user);
 });
 
-passport.deserializeUser(function(obj, done) {
-  done(null, obj);
+passport.deserializeUser(function (user, done) {
+  done(null, user);
+
 });
 
 module.exports = passport;

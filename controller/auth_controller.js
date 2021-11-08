@@ -1,4 +1,4 @@
-let database = require("../database");
+const { userModel } = require("../models/userModel");
 
 let authController = {
   login: (req, res) => {
@@ -9,12 +9,11 @@ let authController = {
     res.render("auth/register");
   },
 
-  loginSubmit: (req, res) => {
-    // implement
-  },
-
   registerSubmit: (req, res) => {
-    // implement
+    const email = req.body.email;
+    const password = req.body.password;
+    userModel.addOne(email, password);
+    res.redirect('/reminders');
   },
 
   home: (req, res) => {
@@ -23,7 +22,7 @@ let authController = {
 
   logout: (req, res) => {
     req.logout();
-    res.redirect('/login');
+    res.redirect('/auth/login');
   }
 };
 
