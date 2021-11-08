@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const { ensureAuthenticated, isAdmin } = require("../middleware/checkAuth");
 const reminderController = require("../controller/reminder_controller");
-const { session } = require("passport");
 
 router.get("/reminders", ensureAuthenticated, reminderController.list);
 

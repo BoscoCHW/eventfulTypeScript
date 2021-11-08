@@ -19,7 +19,8 @@ const userModel = {
             id: database.length + 1,
             reminders: [],
             email,
-            password
+            password,
+            role: 'user'
         };
         database.push(newUser);
         return newUser
@@ -28,7 +29,8 @@ const userModel = {
         const newUser = {
             id,
             username,
-            reminders: []
+            reminders: [],
+            role: 'user'
         };
         database.push(newUser);
         return newUser
