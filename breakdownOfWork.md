@@ -15,15 +15,16 @@
 
 # Sprint 2 - Nov 9, 2021:
 ### Adel Kuanysheva
-1. GitHub implementation 
-2.
+1. GitHub login implementation 
+2. Provided support in revising login implementations
 
 ### Bosco Chan
-1.
-2.
-
+1. Fixed login implementations
+2. Created admin dashboard functionality
 
 ### Jeremy Lam
+1. Local login implementation
+2. Edited login and registration page visuals
 
 # Sprint 3 - Nov 16, 2021:
 ### Adel Kuanysheva
