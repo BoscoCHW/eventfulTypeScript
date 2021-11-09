@@ -2,9 +2,8 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const ejsLayouts = require("express-ejs-layouts");
-const reminderController = require("./controller/reminder_controller");
-const authController = require("./controller/auth_controller");
 const session = require('express-session');
+const passport = require("./middleware/passport");
 
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -14,44 +13,35 @@ app.use(ejsLayouts);
 
 app.set("view engine", "ejs");
 
-// Routes start here
+app.use(
+  session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+      maxAge: 24 * 60 * 60 * 1000,
+    },
+  })
+);
 
-app.get("/reminders", reminderController.list);
-
-app.get("/reminder/new", reminderController.new);
-
-app.get("/reminder/:id", reminderController.listOne);
-
-app.get("/reminder/:id/edit", reminderController.edit);
-
-app.post("/reminder/", reminderController.create);
-
-// Implement this yourself
-app.post("/reminder/update/:id", reminderController.update);
-
-// Implement this yourself
-app.post("/reminder/delete/:id", reminderController.delete);
-
-// Fix this to work with passport! The registration does not need to work, you can use the fake database for this.
-app.get("/register", authController.register);
-app.get("/login", authController.login);
-app.post("/register", authController.registerSubmit);
-app.post("/login", authController.loginSubmit);
-
-// Authorization
-const passport = require("./middleware/passport");
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/auth/github',
-  passport.authenticate('github', { scope: [ 'user:email' ] }));
-app.get('/auth/github/callback', 
-  passport.authenticate('github', { failureRedirect: '/login' }),
-  authController.home
-  );
 
-app.get('/dashboard', authController.home);
-app.get('/auth/logout', authController.logout);
+app.use((req, res, next) => {
+  console.log(req.sessionStore.sessions)
+  console.log(`=================================================`);
+  next();
+});
+
+
+const indexRoute = require("./routes/indexRoute");
+const authRoute = require("./routes/authRoute");
+app.use("/", indexRoute);
+app.use("/auth", authRoute);
+
 
 
 app.listen(3001, function () {
