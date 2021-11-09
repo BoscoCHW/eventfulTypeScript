@@ -23,7 +23,7 @@ router.get('/github', forwardAuthenticated,
 router.get(
     '/github/callback', 
     passport.authenticate('github', { 
-        successRedirect: '/auth/dashboard',
+        successRedirect: '/reminders',
         failureRedirect: '/auth/login'
     })
 );
