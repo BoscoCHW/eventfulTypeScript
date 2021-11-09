@@ -8,7 +8,14 @@ const router = express.Router();
 router.get("/register", forwardAuthenticated, authController.register);
 router.get("/login", forwardAuthenticated, authController.login);
 
-router.post("/register", authController.registerSubmit);
+router.post(
+    "/register",
+    authController.registerSubmit,
+    passport.authenticate("local", {
+        successRedirect: "/reminders",
+        failureRedirect: "/auth/login"
+    })
+);
 router.post(
     "/login", 
     passport.authenticate("local", {

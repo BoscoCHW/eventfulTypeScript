@@ -9,12 +9,12 @@ let authController = {
     res.render("auth/register");
   },
 
-  registerSubmit: (req, res) => {
+  registerSubmit: (req, res, next) => {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
     userModel.addOne(email, password, name);
-    res.redirect('/auth/login');
+    next();
   },
 
   home: (req, res) => {
