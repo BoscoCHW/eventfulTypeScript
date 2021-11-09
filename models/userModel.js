@@ -14,12 +14,13 @@ const userModel = {
       }
       throw new Error(`Couldn't find user with id: ${id}`);
     },
-    addOne: (email, password) => {
+    addOne: (emailInput, passwordInput, nameInput) => {
         const newUser = {
             id: database.length + 1,
+            name: nameInput,
             reminders: [],
-            email,
-            password,
+            email: emailInput,
+            password: passwordInput,
             role: 'user'
         };
         database.push(newUser);

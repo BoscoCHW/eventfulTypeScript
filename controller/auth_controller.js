@@ -10,10 +10,11 @@ let authController = {
   },
 
   registerSubmit: (req, res) => {
+    const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
-    userModel.addOne(email, password);
-    res.redirect('/reminders');
+    userModel.addOne(email, password, name);
+    res.redirect('/auth/login');
   },
 
   home: (req, res) => {
