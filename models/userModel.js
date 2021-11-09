@@ -14,24 +14,26 @@ const userModel = {
       }
       throw new Error(`Couldn't find user with id: ${id}`);
     },
-    addOne: (emailInput, passwordInput, nameInput) => {
+    addOne: (email, password, name, imageUrl) => {
         const newUser = {
             id: database.length + 1,
-            name: nameInput,
+            name,
+            email,
+            password,
             reminders: [],
-            email: emailInput,
-            password: passwordInput,
-            role: 'user'
+            role: 'user',
+            imageUrl
         };
         database.push(newUser);
         return newUser
     },
-    addOneWithIdAndUsername: (idGitHub, usernameGitHub) => {
+    addOneWithIdAndUsername: (id, username, imageUrl) => {
         const newUser = {
-            id: idGitHub,
-            name: usernameGitHub,
+            id,
+            name: username,
             reminders: [],
-            role: 'user'
+            role: 'user',
+            imageUrl
         };
         database.push(newUser);
         return newUser
