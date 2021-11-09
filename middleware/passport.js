@@ -21,8 +21,8 @@ const localLogin = new LocalStrategy(
 
 const githubStrategy = new GitHubStrategy(
   {
-  clientID: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET,
+  clientID: process.env.GITHUB_ID,
+  clientSecret: process.env.GITHUB_KEY,
   callbackURL: "http://localhost:3001/auth/github/callback"
   },
 
