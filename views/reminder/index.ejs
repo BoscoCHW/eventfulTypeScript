@@ -1,5 +1,5 @@
 <div class="container">
-  <h1 class="page-header"><%= user %>'s Reminders</h1>
+  <h1 class="page-header"><%= user %>'s Reminders <a href="/auth/logout" class="btn btn-secondary">Logout</a></h1>
 <ul class="list-group">
   <% reminders.forEach(function (reminderItem) { %>
     <li class="list-group-item">
@@ -15,8 +15,4 @@
     </li>
   <% }) %>
 </ul>
-</div>
-
-<div class="container mt-2">
-  <a href="/auth/logout" class="btn btn-secondary">Logout</a>
 </div>
