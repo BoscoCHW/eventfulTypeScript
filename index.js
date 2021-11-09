@@ -5,6 +5,8 @@ const ejsLayouts = require("express-ejs-layouts");
 const session = require('express-session');
 const passport = require("./middleware/passport");
 
+require("dotenv").config()
+
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(express.urlencoded({ extended: false }));
