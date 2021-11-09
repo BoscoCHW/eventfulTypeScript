@@ -26,10 +26,10 @@ const userModel = {
         database.push(newUser);
         return newUser
     },
-    addOneWithIdAndUsername: (id, username) => {
+    addOneWithIdAndUsername: (idGitHub, usernameGitHub) => {
         const newUser = {
-            id,
-            username,
+            id: idGitHub,
+            name: usernameGitHub,
             reminders: [],
             role: 'user'
         };
