@@ -1,4 +1,3 @@
-require('dotenv').config()
 const GitHubStrategy = require('passport-github2').Strategy;
 const LocalStrategy = require("passport-local").Strategy;
 const passport = require('passport');

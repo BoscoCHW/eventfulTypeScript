@@ -14,6 +14,7 @@ let authController = {
     const email = req.body.email;
     const password = req.body.password;
     userModel.addOne(email, password, name);
+    
     next();
   },
 
