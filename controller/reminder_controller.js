@@ -2,7 +2,11 @@ let database = require("../database");
 
 let remindersController = {
   list: (req, res) => {
-    res.render("reminder/index", { reminders: req.user.reminders, user: req.user.name });
+    res.render("reminder/index", { 
+      reminders: req.user.reminders,
+      user: req.user.name,
+      imageUrl: req.user.imageUrl
+    });
   },
 
   new: (req, res) => {
@@ -17,7 +21,11 @@ let remindersController = {
     if (searchResult != undefined) {
       res.render("reminder/single-reminder", { reminderItem: searchResult });
     } else {
-      res.render("reminder/index", { reminders: req.user.reminders, user: req.user.username });
+      res.render("reminder/index", { 
+        reminders: req.user.reminders, 
+        user: req.user.username, 
+        imageUrl: req.user.imageUrl
+      });
     }
   },
 

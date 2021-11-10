@@ -5,7 +5,8 @@ const userModel = {
       if (user) {
         return user;
       }
-      throw new Error(`Couldn't find user with email: ${email}`);
+      return null
+      // throw new Error(`Couldn't find user with email: ${email}`);
     },
     findById: (id) => {
       const user = database.find((user) => user.id === id);
@@ -14,15 +15,17 @@ const userModel = {
       }
       throw new Error(`Couldn't find user with id: ${id}`);
     },
-    addOne: (emailInput, passwordInput, nameInput) => {
+    addOne: (emailInput, passwordInput, nameInput, imageUrl) => {
         const newUser = {
             id: database.length + 1,
             name: nameInput,
             reminders: [],
             email: emailInput,
             password: passwordInput,
-            role: 'user'
+            role: 'user',
+            imageUrl
         };
+        console.log(newUser)
         database.push(newUser);
         return newUser
     },

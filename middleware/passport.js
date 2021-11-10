@@ -3,6 +3,8 @@ const LocalStrategy = require("passport-local").Strategy;
 const passport = require('passport');
 const userController = require("../controller/userController");
 
+require("dotenv").config()
+
 const localLogin = new LocalStrategy(
   {
     usernameField: "email",
@@ -27,7 +29,7 @@ const githubStrategy = new GitHubStrategy(
   },
 
   function(accessToken, refreshToken, profile, done) {
-    const user = userController.findOrCreateHithubUser(profile.id, profile.username);
+    const user = userController.findOrCreateGithubUser(profile.id, profile.username);
     return done(null, user);
   }
 )

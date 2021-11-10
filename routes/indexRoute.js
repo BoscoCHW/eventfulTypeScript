@@ -12,7 +12,6 @@ router.get("/reminder/:id", ensureAuthenticated, reminderController.listOne);
 router.get("/reminder/:id/edit", ensureAuthenticated, reminderController.edit);
 
 router.post("/reminder/", reminderController.create);
-
 // Implement this yourself
 router.post("/reminder/update/:id", reminderController.update);
 

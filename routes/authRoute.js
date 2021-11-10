@@ -35,7 +35,6 @@ router.get(
     })
 );
 
-router.get('/dashboard', authController.home); //
 router.get('/logout', authController.logout);
 
 

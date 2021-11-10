@@ -1,6 +1,6 @@
 const userModel = require("../models/userModel").userModel;
 
-const findOrCreateHithubUser = (id, username) => {
+const findOrCreateGithubUser = (id, username) => {
   const user = getUserById(id);
   if (user) {
     return user;
@@ -34,7 +34,7 @@ function isUserValid(user, password) {
 }
 
 module.exports = {
-  findOrCreateHithubUser,
+  findOrCreateGithubUser,
   getUserByEmailIdAndPassword,
   getUserById,
 };
