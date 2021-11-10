@@ -5,7 +5,7 @@ const userModel = {
       if (user) {
         return user;
       }
-      return null
+      return null;
       // throw new Error(`Couldn't find user with email: ${email}`);
     },
     findById: (id) => {
@@ -13,7 +13,8 @@ const userModel = {
       if (user) {
         return user;
       }
-      throw new Error(`Couldn't find user with id: ${id}`);
+      return null;
+      // throw new Error(`Couldn't find user with id: ${id}`);
     },
     addOne: (emailInput, passwordInput, nameInput, imageUrl) => {
         const newUser = {
@@ -25,16 +26,17 @@ const userModel = {
             role: 'user',
             imageUrl: imageUrl
         };
-        console.log(newUser)
+        // console.log(newUser)
         database.push(newUser);
         return newUser
     },
-    addOneWithIdAndUsername: (idGitHub, usernameGitHub) => {
+    addOneWithIdAndUsername: (idGitHub, usernameGitHub, imageUrl) => {
         const newUser = {
             id: idGitHub,
             name: usernameGitHub,
             reminders: [],
             role: 'user', 
+            imageUrl
         };
         database.push(newUser);
         return newUser

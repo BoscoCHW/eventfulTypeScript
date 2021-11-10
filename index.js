@@ -34,8 +34,7 @@ app.use(passport.session());
 
 app.use((req, res, next) => {
   console.log(req.user)
-  console.log(req.sessionStore.sessions)
-  console.log(`=================================================`);
+  // console.log(`=================================================`);
   next();
 });
 

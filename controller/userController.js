@@ -1,11 +1,11 @@
 const userModel = require("../models/userModel").userModel;
 
-const findOrCreateGithubUser = (id, username) => {
+const findOrCreateGithubUser = (id, username, imageUrl) => {
   const user = getUserById(id);
   if (user) {
     return user;
   } else {
-    return userModel.addOneWithIdAndUsername(id, username);
+    return userModel.addOneWithIdAndUsername(id, username, imageUrl);
   }
 }
 
@@ -19,13 +19,7 @@ const getUserByEmailIdAndPassword = (email, password) => {
   return null;
 };
 const getUserById = (id) => {
-  let user
-  try {
-    user = userModel.findById(id);
-  } catch (e) {
-    console.log(e)
-    return null
-  }
+  const user = userModel.findById(id);
   return user;
 };
 

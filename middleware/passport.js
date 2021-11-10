@@ -30,7 +30,8 @@ const githubStrategy = new GitHubStrategy(
   },
 
   function(accessToken, refreshToken, profile, done) {
-    const user = userController.findOrCreateGithubUser(profile.id, profile.username);
+    const imageUrl = profile.photos[0].value
+    const user = userController.findOrCreateGithubUser(Number(profile.id), profile.username, imageUrl);
     return done(null, user);
   }
 )
