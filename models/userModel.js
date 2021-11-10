@@ -23,7 +23,7 @@ const userModel = {
             email: emailInput,
             password: passwordInput,
             role: 'user',
-            imageUrl
+            imageUrl: imageUrl
         };
         console.log(newUser)
         database.push(newUser);
@@ -34,7 +34,7 @@ const userModel = {
             id: idGitHub,
             name: usernameGitHub,
             reminders: [],
-            role: 'user'
+            role: 'user', 
         };
         database.push(newUser);
         return newUser

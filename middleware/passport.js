@@ -2,6 +2,7 @@ const GitHubStrategy = require('passport-github2').Strategy;
 const LocalStrategy = require("passport-local").Strategy;
 const passport = require('passport');
 const userController = require("../controller/userController");
+require("dotenv").config()
 
 require("dotenv").config()
 
