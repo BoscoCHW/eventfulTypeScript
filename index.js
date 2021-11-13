@@ -10,6 +10,7 @@ const session = require('express-session');
 const passport = require("./middleware/passport");
 const imgur = require("imgur");
 const fs = require("fs");
+const database = require("./database");
 
 const storage = multer.diskStorage({
   destination: "./uploads",
@@ -69,6 +70,13 @@ app.post("/uploads/", async (req, res) => {
   const file = req.files[0];
   try {
     const url = await imgur.uploadFile(`./uploads/${file.filename}`);
+    console.log(req.user.id)
+    database.forEach(function(obj) {
+      if (obj.id === req.user.id) {
+          obj.imageUrl = url.link;
+          console.log(obj)
+      }
+  });
     res.json({ message: url.link });
     fs.unlinkSync(`./uploads/${file.filename}`);
   } catch (error) {

@@ -41,15 +41,4 @@ router.get("/revokeSession/:id", ensureAuthenticated, isAdmin, (req, res) => {
     return res.redirect("/admin")
 })
 
-/* router.post("/uploads", async (req, res) => {
-    const file = req.files[0];
-    try {
-      const url = await imgur.uploadFile(`./uploads/${file.filename}`);
-      res.json({ message: url.data.link });
-      fs.unlinkSync(`./uploads/${file.filename}`);
-    } catch (error) {
-      console.log("error", error);
-    }
-  }); */
-
 module.exports = router;
