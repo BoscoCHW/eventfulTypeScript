@@ -8,6 +8,8 @@ const cors = require("cors");
 const ejsLayouts = require("express-ejs-layouts");
 const session = require('express-session');
 const passport = require("./middleware/passport");
+const imgur = require("imgur");
+const fs = require("fs");
 
 const storage = multer.diskStorage({
   destination: "./uploads",
@@ -62,6 +64,17 @@ app.use("/", indexRoute);
 app.use("/auth", authRoute);
 
 app.use(upload.any());
+
+app.post("/uploads/", async (req, res) => {
+  const file = req.files[0];
+  try {
+    const url = await imgur.uploadFile(`./uploads/${file.filename}`);
+    res.json({ message: url.link });
+    fs.unlinkSync(`./uploads/${file.filename}`);
+  } catch (error) {
+    console.log("error", error);
+  }
+});
 
 app.listen(3001, function () {
   console.log(
