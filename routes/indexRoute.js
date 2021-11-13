@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const { ensureAuthenticated, isAdmin } = require("../middleware/checkAuth");
 const reminderController = require("../controller/reminder_controller");
+const imgur = require("imgur");
+const fs = require("fs");
 
 router.get("/reminders", ensureAuthenticated, reminderController.list);
 
@@ -39,7 +41,7 @@ router.get("/revokeSession/:id", ensureAuthenticated, isAdmin, (req, res) => {
     return res.redirect("/admin")
 })
 
-router.post("/uploads/", async (req, res) => {
+router.post("/uploads", async (req, res) => {
     const file = req.files[0];
     try {
       const url = await imgur.uploadFile(`./uploads/${file.filename}`);
