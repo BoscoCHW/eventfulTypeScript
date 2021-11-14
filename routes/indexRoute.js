@@ -4,6 +4,8 @@ const { ensureAuthenticated, isAdmin } = require("../middleware/checkAuth");
 const reminderController = require("../controller/reminder_controller");
 const imgur = require("imgur");
 const fs = require("fs");
+const upload = require("../middleware/multer")
+const database = require("../database")
 
 router.get("/reminders", ensureAuthenticated, reminderController.list);
 
@@ -40,5 +42,21 @@ router.get("/revokeSession/:id", ensureAuthenticated, isAdmin, (req, res) => {
     delete req.sessionStore.sessions[sessionId]
     return res.redirect("/admin")
 })
+
+router.post("/uploads/", upload.single("image"), async (req, res) => {
+    const file = req.file;
+    try {
+        const url = await imgur.uploadFile(`./uploads/${file.filename}`);
+        database.forEach(user => {
+            if (user.id === req.user.id) {
+                user.imageUrl = url.link;
+            }
+        });
+        res.json({ message: url.link });
+        fs.unlinkSync(`./uploads/${file.filename}`);
+    } catch (error) {
+        console.log("error", error);
+    }
+  });
 
 module.exports = router;
