@@ -33,6 +33,7 @@ app.use(ejsLayouts);
 app.use(morgan("dev"));
 app.use(helmet());
 app.use(cors());
+app.use(upload.any());
 
 app.set("view engine", "ejs");
 
@@ -64,13 +65,12 @@ const authRoute = require("./routes/authRoute");
 app.use("/", indexRoute);
 app.use("/auth", authRoute);
 
-app.use(upload.any());
+
 
 app.post("/uploads/", async (req, res) => {
   const file = req.files[0];
   try {
     const url = await imgur.uploadFile(`./uploads/${file.filename}`);
-    console.log(req.user.id)
     database.forEach(function(obj) {
       if (obj.id === req.user.id) {
           obj.imageUrl = url.link;

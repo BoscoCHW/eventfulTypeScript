@@ -1,6 +1,7 @@
-
+const imgur = require("imgur");
 const fetch = require("node-fetch")
 const { userModel } = require("../models/userModel");
+const fs = require("fs");
 
 let authController = {
   
@@ -12,22 +13,36 @@ let authController = {
     res.render("auth/register");
   },
 
-  registerSubmit: (req, res, next) => {
+  registerSubmit: async (req, res, next) => {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
-    const clientId = process.env.UNSPLASH_ID
-    const query = "quokka";
-    const url = `https://api.unsplash.com/photos?client_id=${clientId}&query=${query}`
-    fetch(url)
-    .then((data) => data.json())
-    .then((newData) => {
-      const num = Math.floor(Math.random() * newData.length)
-      const imageFromUnsplash = newData[num]["urls"]["thumb"]
-      userModel.addOne(email, password, name, imageFromUnsplash)
-      next();
-    })
-    .catch((err) => console.log(err))
+    if (req.files.length !== 0) {
+      const file = req.files[0];
+      try {
+        const resp = await imgur.uploadFile(`./uploads/${file.filename}`);
+        const imageUrl = resp.link;
+        userModel.addOne(email, password, name, imageUrl);
+        fs.unlinkSync(`./uploads/${file.filename}`);
+        next();
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      const clientId = process.env.UNSPLASH_ID;
+      const query = "quokka";
+      const url = `https://api.unsplash.com/photos?client_id=${clientId}&query=${query}`;
+      try {
+        const resp = await fetch(url);
+        const data = await resp.json();
+        const num = Math.floor(Math.random() * data.length);
+        const imageFromUnsplash = data[num]["urls"]["thumb"];
+        userModel.addOne(email, password, name, imageFromUnsplash);
+        next();
+      } catch (e) {
+        console.log(e);
+      }
+    }
   },
 
   logout: (req, res) => {
