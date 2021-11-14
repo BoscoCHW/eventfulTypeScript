@@ -31,7 +31,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json({ extended: false }));
 app.use(ejsLayouts);
 app.use(morgan("dev"));
-app.use(helmet());
+app.use(helmet());   // this is causing image failed to render, but it protects the app from XSS attack
 app.use(cors());
 app.use(upload.any());
 
