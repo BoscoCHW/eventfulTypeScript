@@ -17,8 +17,8 @@ let authController = {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
-    if (req.files.length !== 0) {
-      const file = req.files[0];
+    if (req.file) {
+      const file = req.file;
       try {
         const resp = await imgur.uploadFile(`./uploads/${file.filename}`);
         const imageUrl = resp.link;

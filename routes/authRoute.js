@@ -3,6 +3,7 @@ const passport = require("../middleware/passport");
 const { forwardAuthenticated } = require("../middleware/checkAuth");
 const authController = require("../controller/auth_controller");
 const router = express.Router();
+const upload = require("../middleware/multer")
 
 // Fix this to work with passport! The registration does not need to work, you can use the fake database for this.
 router.get("/register", forwardAuthenticated, authController.register);
@@ -10,6 +11,7 @@ router.get("/login", forwardAuthenticated, authController.login);
 
 router.post(
     "/register",
+    upload.single('avatar'),
     authController.registerSubmit,
     passport.authenticate("local", {
         successRedirect: "/reminders",

@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const path = require("path");
-const multer = require("multer");
+const upload = require("./middleware/multer")
 const helmet = require("helmet");
 const morgan = require("morgan");
 const cors = require("cors");
@@ -12,18 +12,6 @@ const imgur = require("imgur");
 const fs = require("fs");
 const database = require("./database");
 
-const storage = multer.diskStorage({
-  destination: "./uploads",
-  filename: (req, file, callback) => {
-    callback(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-    );
-  },
-});
-const upload = multer({
-  storage: storage,
-});
 
 require("dotenv").config()
 app.use(express.static(path.join(__dirname, "public")));
@@ -33,7 +21,7 @@ app.use(ejsLayouts);
 app.use(morgan("dev"));
 app.use(helmet());   // this is causing image failed to render, but it protects the app from XSS attack
 app.use(cors());
-app.use(upload.any());
+
 
 app.set("view engine", "ejs");
 
@@ -67,7 +55,7 @@ app.use("/auth", authRoute);
 
 
 
-app.post("/uploads/", async (req, res) => {
+app.post("/uploads/", upload.any(), async (req, res) => {
   const file = req.files[0];
   try {
     const url = await imgur.uploadFile(`./uploads/${file.filename}`);
