@@ -24,7 +24,6 @@ let authController = {
         const imageUrl = resp.link;
         userModel.addOne(email, password, name, imageUrl);
         fs.unlinkSync(`./uploads/${file.filename}`);
-        next();
       } catch (err) {
         console.log(err);
       }
@@ -38,11 +37,12 @@ let authController = {
         const num = Math.floor(Math.random() * data.length);
         const imageFromUnsplash = data[num]["urls"]["thumb"];
         userModel.addOne(email, password, name, imageFromUnsplash);
-        next();
       } catch (e) {
         console.log(e);
       }
     }
+
+    next();
   },
 
   logout: (req, res) => {

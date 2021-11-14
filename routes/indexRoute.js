@@ -43,7 +43,7 @@ router.get("/revokeSession/:id", ensureAuthenticated, isAdmin, (req, res) => {
     return res.redirect("/admin")
 })
 
-router.post("/uploads/", upload.single("image"), async (req, res) => {
+router.post("/uploads/", ensureAuthenticated, upload.single("image"), async (req, res) => {
     const file = req.file;
     try {
         const url = await imgur.uploadFile(`./uploads/${file.filename}`);
