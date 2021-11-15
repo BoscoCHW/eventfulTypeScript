@@ -28,16 +28,14 @@
 
 # Sprint 3 - Nov 16, 2021:
 ### Adel Kuanysheva
-1.
-2.
+1. Created functionality for profile picture to be generated on user registration
 
 ### Bosco Chan
-1.
-2.
+1. Added functionality to pull GitHub display picture on GitHub login
+2. Refactored code for display picture upload functionality
 
 ### Jeremy Lam
-1.
-2.
+1. Created functionality for users to upload profile picture
 
 # Sprint 4 - Nov 23, 2021:
 ### Adel Kuanysheva
