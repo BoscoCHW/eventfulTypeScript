@@ -9,8 +9,8 @@ const ejsLayouts = require("express-ejs-layouts");
 const session = require('express-session');
 const passport = require("./middleware/passport");
 
-// import { PrimaClient } from '@prisma/client';
-// const prsima = new PrimaClient();
+const { PrismaClient } = require('@prisma/client');
+const prsima = new PrismaClient();
 
 require("dotenv").config()
 app.use(express.static(path.join(__dirname, "public")));

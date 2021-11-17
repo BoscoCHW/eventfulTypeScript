@@ -8,6 +8,5 @@ document.getElementById("file").addEventListener("change", (ev) => {
     method: "POST",
     body: formdata,
   })
-    .then((data) => data.json())
-    .then((data) => console.log(data));
+    .then((data) => window.location.reload())
 });
