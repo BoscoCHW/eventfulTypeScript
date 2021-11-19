@@ -3,7 +3,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 const userModel = {
-    findOne: async (email) => {
+    findByEmail: async (email) => {
       try {
         const user = await prisma.user.findUnique({ where: { email } });
         return user;
@@ -21,7 +21,8 @@ const userModel = {
       }
 
     },
-    addOne: async (email, password, name, imageUrl) => {
+    addOne: async (id, email, password, name, imageUrl) => {
+      
         const data = {
             name,
             email,
@@ -29,6 +30,11 @@ const userModel = {
             role: 'user',
             imageUrl: imageUrl
         };
+
+        if (id) {
+          data.id = id
+        }
+        
         try{
           const newUser = await prisma.user.create({ data });
           return newUser;

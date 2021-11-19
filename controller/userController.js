@@ -1,13 +1,18 @@
 const { userModel } = require("../models/userModel");
 
-const findOrCreateGithubUser = async (username, email, imageUrl) => {
+const findOrCreateGithubUser = async (id, username, email, imageUrl) => {
+
   try { 
-    const user = await getUserById(id);
+    const user = await userModel.findById(id);
 
     if (user) {
       return user;
     } else {
-      user = await userModel.addOne(email, "NA", username, imageUrl);
+      if (email) {
+        user = await userModel.addOne(id, email, "NA", username, imageUrl);
+      } else {
+        user = await userModel.addOne(id, "NA", "NA", username, imageUrl);
+      }
       return user;
     }
 
@@ -19,7 +24,7 @@ const findOrCreateGithubUser = async (username, email, imageUrl) => {
 
 const getUserByEmailAndPassword = async (email, password) => {
   try {
-    let user = await userModel.findOne(email);
+    let user = await userModel.findByEmail(email);
     if (user && isUserValid(user, password)) {
       return user;
     }
@@ -42,6 +47,15 @@ const getUserById = async (id) => {
 
 };
 
+const registerUser = async (email, password, name, imageUrl) => {
+  try {
+    const newUser = await userModel.addOne(null, email, password, name, imageUrl)
+    return newUser
+  } catch (err) {
+    throw err;
+  }
+};
+
 function isUserValid(user, password) {
   return user.password === password;
 }
@@ -50,4 +64,5 @@ module.exports = {
   findOrCreateGithubUser,
   getUserByEmailAndPassword,
   getUserById,
+  registerUser
 };

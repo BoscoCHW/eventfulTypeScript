@@ -35,7 +35,7 @@ const githubStrategy = new GitHubStrategy(
   async (accessToken, refreshToken, profile, done) => {
     const imageUrl = profile.photos[0].value
     try {
-      const user = await userController.findOrCreateGithubUser(profile.username, profile.email, imageUrl);
+      const user = await userController.findOrCreateGithubUser(profile.id, profile.username, profile.email, imageUrl);
       return done(null, user);
     } catch (err) {
       throw err;

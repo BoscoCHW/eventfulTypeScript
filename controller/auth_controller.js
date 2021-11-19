@@ -1,6 +1,6 @@
 const imgur = require("imgur");
 const fetch = require("node-fetch")
-const { userModel } = require("../models/userModel");
+const { registerUser } = require("../controller/userController");
 const fs = require("fs");
 
 let authController = {
@@ -22,7 +22,7 @@ let authController = {
       try {
         const resp = await imgur.uploadFile(`./uploads/${file.filename}`);
         const imageUrl = resp.link;
-        userModel.addOne(email, password, name, imageUrl);
+        await registerUser(email, password, name, imageUrl);
         fs.unlinkSync(`./uploads/${file.filename}`);
       } catch (err) {
         console.log(err);
@@ -36,9 +36,9 @@ let authController = {
         const data = await resp.json();
         const num = Math.floor(Math.random() * data.length);
         const imageFromUnsplash = data[num]["urls"]["thumb"];
-        userModel.addOne(email, password, name, imageFromUnsplash);
-      } catch (e) {
-        console.log(e);
+        await registerUser(email, password, name, imageFromUnsplash);
+      } catch (err) {
+        console.log(err);
       }
     }
 
