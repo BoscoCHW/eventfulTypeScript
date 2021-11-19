@@ -14,56 +14,47 @@ let remindersController = {
     res.render("reminder/create");
   },
 
-  listOne: (req, res) => {
-    let reminderToFind = req.params.id;
-    let searchResult = req.user.reminders.find(function (reminder) {
-      return reminder.id == reminderToFind;
-    });
-    if (searchResult != undefined) {
-      res.render("reminder/single-reminder", { reminderItem: searchResult });
+  listOne: async (req, res) => {
+    const reminderToFind = req.params.id;
+    const reminder = await reminderModel.findById(reminderToFind);
+    if (reminder) {
+      res.render("reminder/single-reminder", { reminderItem: reminder });
     } else {
-      res.render("reminder/index", { 
-        reminders: req.user.reminders, 
-        user: req.user.username, 
-        imageUrl: req.user.imageUrl
-      });
+      res.redirect("/reminders");
     }
   },
 
-  create: (req, res) => {
-    let reminder = {
-      id: req.user.reminders.length + 1,
-      title: req.body.title,
-      description: req.body.description,
-      completed: false,
-    };
-    req.user.reminders.push(reminder);
+  create: async (req, res) => {
+    const userId = req.user.id;
+    const title = req.body.title;
+    const description = req.body.description;
+
+    await reminderModel.addOne(userId, title, description);
+
     res.redirect("/reminders");
   },
 
-  edit: (req, res) => {
-    let reminderToFind = req.params.id;
-    let searchResult = req.user.reminders.find(function (reminder) {
-      return reminder.id == reminderToFind;
-    });
-    res.render("reminder/edit", { reminderItem: searchResult });
+  edit: async (req, res) => {
+    const reminderToFind = req.params.id;
+    const reminder = await reminderModel.findById(reminderToFind);
+
+    res.render("reminder/edit", { reminderItem: reminder });
   },
 
-  update: (req, res) => {
+  update: async (req, res) => {
 
-    const reminderID = Number(req.params.id);
-    const updatedReminder = Object.assign({id: reminderID}, req.body);
-    updatedReminder.completed = (updatedReminder.completed === "true")
-    
-    const reminderIndex = req.user.reminders.findIndex(reminder => reminder.id === reminderID)
-    req.user.reminders.splice(reminderIndex, 1, updatedReminder);
+    const reminderID = req.params.id;
+    const reminderData = Object.assign({}, req.body);
+    reminderData.completed = (reminderData.completed === "true")
+
+    await reminderModel.updateOne(reminderID, reminderData);
 
     res.redirect("/reminder/" + reminderID);
   },
 
-  delete: (req, res) => {
-    const reminderToFind = Number(req.params.id);
-    req.user.reminders = req.user.reminders.filter(reminder => reminder.id !== reminderToFind);
+  delete: async (req, res) => {
+    const reminderId = req.params.id;
+    await reminderModel.deleteOne(reminderId)
     res.redirect("/reminders");
   },
 };
