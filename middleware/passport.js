@@ -4,8 +4,6 @@ const passport = require('passport');
 const userController = require("../controller/userController");
 require("dotenv").config()
 
-require("dotenv").config()
-
 const localLogin = new LocalStrategy(
   {
     usernameField: "email",
@@ -13,7 +11,7 @@ const localLogin = new LocalStrategy(
   },
 
   (email, password, done) => {
-    const user = userController.getUserByEmailIdAndPassword(email, password);
+    const user = userController.getUserByEmailAndPassword(email, password);
     return user
       ? done(null, user)
       : done(null, false, {
@@ -31,7 +29,7 @@ const githubStrategy = new GitHubStrategy(
 
   function(accessToken, refreshToken, profile, done) {
     const imageUrl = profile.photos[0].value
-    const user = userController.findOrCreateGithubUser(Number(profile.id), profile.username, imageUrl);
+    const user = userController.findOrCreateGithubUser(profile.username, profile.email, imageUrl);
     return done(null, user);
   }
 )

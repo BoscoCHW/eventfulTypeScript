@@ -1,26 +1,45 @@
-const userModel = require("../models/userModel").userModel;
+const { userModel } = require("../models/userModel");
 
-const findOrCreateGithubUser = (id, username, imageUrl) => {
-  const user = getUserById(id);
-  if (user) {
-    return user;
-  } else {
-    return userModel.addOneWithIdAndUsername(id, username, imageUrl);
-  }
-}
+const findOrCreateGithubUser = async (username, email, imageUrl) => {
+  try { 
+    const user = await getUserById(id);
 
-const getUserByEmailIdAndPassword = (email, password) => {
-  let user = userModel.findOne(email);
-  if (user) {
-    if (isUserValid(user, password)) {
+    if (user) {
+      return user;
+    } else {
+      user = await userModel.addOne(email, "NA", username, imageUrl);
       return user;
     }
+
+  } catch (err) {
+    throw err;
   }
+
+}
+
+const getUserByEmailAndPassword = async (email, password) => {
+  try {
+    let user = await userModel.findOne(email);
+    if (user && isUserValid(user, password)) {
+      return user;
+    }
+  } catch (err) {
+    throw err;
+  }
+  
   return null;
 };
-const getUserById = (id) => {
-  const user = userModel.findById(id);
-  return user;
+
+const getUserById = async (id) => {
+
+  try {
+    const user = await userModel.findById(id);
+    if (user) return user;
+  } catch (err) {
+    throw err;
+  }
+  return null;
+
 };
 
 function isUserValid(user, password) {
@@ -29,6 +48,6 @@ function isUserValid(user, password) {
 
 module.exports = {
   findOrCreateGithubUser,
-  getUserByEmailIdAndPassword,
+  getUserByEmailAndPassword,
   getUserById,
 };

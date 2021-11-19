@@ -1,46 +1,43 @@
-const database = require("../database");
+// const database = require("../database");
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
+
 const userModel = {
-    findOne: (email) => {
-      const user = database.find((user) => user.email === email);
-      if (user) {
+    findOne: async (email) => {
+      try {
+        const user = await prisma.user.findUnique({ where: { email } });
         return user;
+      } catch (err) {
+        throw err;
       }
-      return null;
-      // throw new Error(`Couldn't find user with email: ${email}`);
+   
     },
-    findById: (id) => {
-      const user = database.find((user) => user.id === id);
-      if (user) {
+    findById: async (id) => {
+      try {
+        const user = await prisma.user.findUnique({ where: { id } });
         return user;
+      } catch (err) {
+        throw err;
       }
-      return null;
-      // throw new Error(`Couldn't find user with id: ${id}`);
+
     },
-    addOne: (emailInput, passwordInput, nameInput, imageUrl) => {
-        const newUser = {
-            id: database.length + 1,
-            name: nameInput,
-            reminders: [],
-            email: emailInput,
-            password: passwordInput,
+    addOne: async (email, password, name, imageUrl) => {
+        const data = {
+            name,
+            email,
+            password,
             role: 'user',
             imageUrl: imageUrl
         };
-        // console.log(newUser)
-        database.push(newUser);
-        return newUser
-    },
-    addOneWithIdAndUsername: (idGitHub, usernameGitHub, imageUrl) => {
-        const newUser = {
-            id: idGitHub,
-            name: usernameGitHub,
-            reminders: [],
-            role: 'user', 
-            imageUrl
-        };
-        database.push(newUser);
-        return newUser
+        try{
+          const newUser = await prisma.user.create({ data });
+          return newUser;
+        } catch (err) {
+          throw err;
+        }
+ 
     }
+  
   };
   
 module.exports = { userModel };
