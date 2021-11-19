@@ -10,8 +10,13 @@ const localLogin = new LocalStrategy(
     passwordField: "password",
   },
 
-  (email, password, done) => {
-    const user = userController.getUserByEmailAndPassword(email, password);
+  async (email, password, done) => {
+    let user = null
+    try {
+      user = await userController.getUserByEmailAndPassword(email, password);
+    } catch (err) {
+      throw err;
+    }
     return user
       ? done(null, user)
       : done(null, false, {
@@ -27,10 +32,14 @@ const githubStrategy = new GitHubStrategy(
   callbackURL: "http://localhost:3001/auth/github/callback"
   },
 
-  function(accessToken, refreshToken, profile, done) {
+  async (accessToken, refreshToken, profile, done) => {
     const imageUrl = profile.photos[0].value
-    const user = userController.findOrCreateGithubUser(profile.username, profile.email, imageUrl);
-    return done(null, user);
+    try {
+      const user = await userController.findOrCreateGithubUser(profile.username, profile.email, imageUrl);
+      return done(null, user);
+    } catch (err) {
+      throw err;
+    }
   }
 )
 
@@ -40,8 +49,13 @@ passport.serializeUser(function (user, done) {
   done(null, user.id);
 });
 
-passport.deserializeUser(function (userId, done) {
-  const user = userController.getUserById(userId);
+passport.deserializeUser(async (userId, done) => {
+  let user = null
+  try {
+    user = await userController.getUserById(userId);
+  } catch (err) {
+    throw err;
+  }
   if (user) {
     done(null, user);
   } else {
