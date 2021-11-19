@@ -10,7 +10,7 @@ const session = require('express-session');
 const passport = require("./middleware/passport");
 
 const { PrismaClient } = require('@prisma/client');
-const prsima = new PrismaClient();
+const prisma = new PrismaClient();
 
 require("dotenv").config()
 app.use(express.static(path.join(__dirname, "public")));
@@ -40,6 +40,17 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(async (req, res, next) => {
+  const data = {
+    email: "test1@test.com",
+    name: "test1"
+  }
+  // await prisma.user.create({ data })
+  const users = await prisma.user.findMany()
+  console.log(users)
+  next(); 
+
+})
 
 const indexRoute = require("./routes/indexRoute");
 const authRoute = require("./routes/authRoute");

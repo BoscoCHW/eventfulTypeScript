@@ -12,6 +12,9 @@
     "type": "git",
     "url": ""
   },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
   "author": "",
   "license": "ISC",
   "homepage": "http://http",
