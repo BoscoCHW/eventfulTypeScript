@@ -41,13 +41,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(async (req, res, next) => {
-  const data = {
-    email: "test1@test.com",
-    name: "test1"
+  const userId = req.user?.id
+  if (userId) {
+    const data = await prisma.reminder.findMany({ where: { userId } });
+    console.log(data)
   }
-  // await prisma.user.create({ data })
-  const users = await prisma.user.findMany()
-  console.log(users)
   next(); 
 
 })

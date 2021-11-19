@@ -1,4 +1,3 @@
-// const database = require("../database");
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
@@ -34,7 +33,7 @@ const userModel = {
         if (id) {
           data.id = id
         }
-        
+
         try{
           const newUser = await prisma.user.create({ data });
           return newUser;

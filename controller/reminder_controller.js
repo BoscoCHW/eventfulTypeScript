@@ -1,9 +1,10 @@
-let database = require("../database");
+const { reminderModel } = require("../models/reminderModel");
 
 let remindersController = {
-  list: (req, res) => {
+  list: async (req, res) => {
+    const reminders = await reminderModel.findByUser(req.user.id);
     res.render("reminder/index", { 
-      reminders: req.user.reminders,
+      reminders,
       user: req.user.name,
       imageUrl: req.user.imageUrl
     });
