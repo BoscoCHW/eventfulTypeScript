@@ -40,17 +40,26 @@ const reminderModel = {
     },
 
     updateOne: async (id, data) => {
-    
-      const newReminder = await prisma.reminder.update({
-        where: { id },
-        data
-      });
-      return newReminder
+      try {
+        const Reminder = await prisma.reminder.update({
+          where: { id },
+          data
+        });
+        return Reminder
+      } catch (err) {
+        throw err;
+      }
+      
     },
 
     deleteOne: async (id) => {
-      const user = await prisma.reminder.delete({ where: { id } });
-      return user
+      try {
+        const user = await prisma.reminder.delete({ where: { id } });
+        return user
+      } catch (err) {
+        throw err;
+      }
+      
     }
   
   };

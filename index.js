@@ -40,15 +40,6 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(async (req, res, next) => {
-  const userId = req.user?.id
-  if (userId) {
-    const data = await prisma.reminder.findMany({ where: { userId } });
-    console.log(data)
-  }
-  next(); 
-
-})
 
 const indexRoute = require("./routes/indexRoute");
 const authRoute = require("./routes/authRoute");

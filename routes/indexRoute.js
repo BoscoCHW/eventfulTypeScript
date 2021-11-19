@@ -5,7 +5,7 @@ const reminderController = require("../controller/reminder_controller");
 const imgur = require("imgur");
 const fs = require("fs");
 const upload = require("../middleware/multer")
-const database = require("../database")
+const { userModel } = require("../models/userModel")
 
 router.get("/reminders", ensureAuthenticated, reminderController.list);
 
@@ -47,11 +47,8 @@ router.post("/uploads/", ensureAuthenticated, upload.single("image"), async (req
     const file = req.file;
     try {
         const url = await imgur.uploadFile(`./uploads/${file.filename}`);
-        database.forEach(user => {
-            if (user.id === req.user.id) {
-                user.imageUrl = url.link;
-            }
-        });
+        await userModel.updateOne(req.user.id, { imageUrl: url.link })
+ 
         res.json({ message: url.link });
         fs.unlinkSync(`./uploads/${file.filename}`);
     } catch (error) {
