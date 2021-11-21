@@ -1,8 +1,15 @@
-const GitHubStrategy = require('passport-github2').Strategy;
-const LocalStrategy = require("passport-local").Strategy;
-const passport = require('passport');
-const userController = require("../controller/userController");
-require("dotenv").config()
+// const GitHubStrategy = require('passport-github2').Strategy;
+import { Strategy as GitHubStrategy } from 'passport-github2';
+// const LocalStrategy = require("passport-local").Strategy;
+import { Strategy as LocalStrategy } from 'passport-local';
+// const passport = require('passport');
+import passport from 'passport';
+// const userController = require("../controller/userController");
+import userController from '../controller/userController';
+import 'dotenv/config';
+import { UserInterface } from '../interfaces';
+// dotenv.config()
+// require("dotenv").config()
 
 const localLogin = new LocalStrategy(
   {
@@ -10,8 +17,8 @@ const localLogin = new LocalStrategy(
     passwordField: "password",
   },
 
-  async (email, password, done) => {
-    let user = null
+  async (email: String, password: String, done) => {
+    let user: any = null
     try {
       user = await userController.getUserByEmailAndPassword(email, password);
     } catch (err) {
@@ -27,8 +34,8 @@ const localLogin = new LocalStrategy(
 
 const githubStrategy = new GitHubStrategy(
   {
-  clientID: process.env.GITHUB_ID,
-  clientSecret: process.env.GITHUB_KEY,
+  clientID: process.env.GITHUB_ID!,
+  clientSecret: process.env.GITHUB_KEY!,
   callbackURL: "http://localhost:3001/auth/github/callback"
   },
 
@@ -45,12 +52,12 @@ const githubStrategy = new GitHubStrategy(
 
 passport.use(localLogin).use(githubStrategy);
 
-passport.serializeUser(function (user, done) {
+passport.serializeUser(function (user: UserInterface, done) {
   done(null, user.id);
 });
 
 passport.deserializeUser(async (userId, done) => {
-  let user = null
+  let user: any = null
   try {
     user = await userController.getUserById(userId);
   } catch (err) {
@@ -63,4 +70,4 @@ passport.deserializeUser(async (userId, done) => {
   }
 });
 
-module.exports = passport;
+export default passport;

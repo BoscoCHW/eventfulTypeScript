@@ -1,9 +1,9 @@
-const { userModel } = require("../models/userModel");
+import { userModel } from "../models/userModel";
 
 const findOrCreateGithubUser = async (id, username, email, imageUrl) => {
 
   try { 
-    const user = await userModel.findById(id);
+    let user = await userModel.findById(id);
 
     if (user) {
       return user;
@@ -60,7 +60,7 @@ function isUserValid(user, password) {
   return user.password === password;
 }
 
-module.exports = {
+export default {
   findOrCreateGithubUser,
   getUserByEmailAndPassword,
   getUserById,

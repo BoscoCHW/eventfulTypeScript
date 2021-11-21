@@ -1,5 +1,14 @@
-const { PrismaClient } = require('@prisma/client');
+import { PrismaClient, Prisma } from '@prisma/client';
 const prisma = new PrismaClient();
+
+interface data {
+  id: string;
+  name: String;
+  email: String;
+  password: String;
+  role: String;
+  imageUrl: String;
+}
 
 const userModel = {
 
@@ -24,7 +33,7 @@ const userModel = {
   },
   addOne: async (id, email, password, name, imageUrl) => {
     
-    const data = {
+    const data: Prisma.UserUncheckedCreateInput = {
       name,
       email,
       password,
@@ -60,5 +69,5 @@ const userModel = {
   
   };
   
-module.exports = { userModel };
+export { userModel };
   
