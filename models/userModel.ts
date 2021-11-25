@@ -12,7 +12,7 @@ interface data {
 
 const userModel = {
 
-  findByEmail: async (email) => {
+  findByEmail: async (email: string) => {
     try {
       const user = await prisma.user.findUnique({ where: { email } });
       return user;
@@ -22,7 +22,7 @@ const userModel = {
   
   },
 
-  findById: async (id) => {
+  findById: async (id: string) => {
     try {
       const user = await prisma.user.findUnique({ where: { id } });
       return user;
@@ -31,7 +31,7 @@ const userModel = {
     }
 
   },
-  addOne: async (id, email, password, name, imageUrl) => {
+  addOne: async (id: string, email: string, password: string, name: string, imageUrl: string) => {
     
     const data: Prisma.UserUncheckedCreateInput = {
       name,
@@ -54,7 +54,7 @@ const userModel = {
 
   },
   
-  updateOne: async (id, data) => {
+  updateOne: async (id: string, data) => {
     try {
       const user = await prisma.user.update({
         where: { id },

@@ -1,11 +1,16 @@
-const express = require("express");
+import express, {Request, Response} from"express";
 const router = express.Router();
-const { ensureAuthenticated, isAdmin } = require("../middleware/checkAuth");
-const reminderController = require("../controller/reminder_controller");
-const imgur = require("imgur");
-const fs = require("fs");
-const upload = require("../middleware/multer")
-const { userModel } = require("../models/userModel")
+import { ensureAuthenticated, isAdmin } from "../middleware/checkAuth";
+import reminderController from "../controller/reminder_controller";
+import imgur from "imgur";
+import fs from "fs";
+import upload from "../middleware/multer";
+import { userModel } from "../models/userModel";
+
+interface MulterRequest extends Request {
+    file: any;
+}
+
 
 router.get("/reminders", ensureAuthenticated, reminderController.list);
 
@@ -23,7 +28,7 @@ router.post("/reminder/update/:id", reminderController.update);
 router.post("/reminder/delete/:id", reminderController.delete);
 
 
-router.get("/admin", ensureAuthenticated, isAdmin, (req, res) => {
+router.get("/admin", ensureAuthenticated, isAdmin, (req: Request, res: Response) => {
     const sessions = []
     for (sessionId in req.sessionStore.sessions) {
         const cookie = JSON.parse(req.sessionStore.sessions[sessionId])
@@ -43,7 +48,7 @@ router.get("/revokeSession/:id", ensureAuthenticated, isAdmin, (req, res) => {
     return res.redirect("/admin")
 })
 
-router.post("/uploads/", ensureAuthenticated, upload.single("image"), async (req, res) => {
+router.post("/uploads/", ensureAuthenticated, upload.single("image"), async (req: MulterRequest, res) => {
     const file = req.file;
     try {
         const url = await imgur.uploadFile(`./uploads/${file.filename}`);
@@ -56,4 +61,4 @@ router.post("/uploads/", ensureAuthenticated, upload.single("image"), async (req
     }
   });
 
-module.exports = router;
+export default router;
