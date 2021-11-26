@@ -1,16 +1,6 @@
-export interface UserInterface {
-  id: string;
-  email: String;
-  name: String;
-  password: String;
-  role: String;
-  imageUrl: String;
-  // reminders: 
-  createdAt: String;
-  updatedAt: String;
-}
+import { User } from ".prisma/client";
 
-export interface ReminderInterface {
+export interface IReminder {
   id: String;
   userId: String;
   title: String;
@@ -20,3 +10,6 @@ export interface ReminderInterface {
   updatedAt: String;
 }
 
+export interface IUser extends User {
+  reminders: IReminder[];
+}
