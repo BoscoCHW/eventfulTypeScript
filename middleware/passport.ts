@@ -7,7 +7,7 @@ import passport from "passport";
 // const userController = require("../controller/userController");
 import userController from "../controller/userController";
 import "dotenv/config";
-import { IUser } from "interfaces";
+import { User } from ".prisma/client";
 // dotenv.config()
 // require("dotenv").config()
 
@@ -18,7 +18,7 @@ const localLogin = new LocalStrategy(
   },
 
   async (email: String, password: String, done) => {
-    let user: any = null;
+    let user: null | User = null;
     try {
       user = await userController.getUserByEmailAndPassword(email, password);
     } catch (err) {
@@ -57,12 +57,12 @@ const githubStrategy = new GitHubStrategy(
 
 passport.use(localLogin).use(githubStrategy);
 
-passport.serializeUser(function (user: IUser, done) {
+passport.serializeUser(function (user: User, done) {
   done(null, user.id);
 });
 
 passport.deserializeUser(async (userId, done) => {
-  let user: any = null;
+  let user: null | User = null;
   try {
     user = await userController.getUserById(userId);
   } catch (err) {

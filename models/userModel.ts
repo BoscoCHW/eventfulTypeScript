@@ -1,14 +1,7 @@
 import { PrismaClient, Prisma } from '@prisma/client';
 const prisma = new PrismaClient();
 
-interface data {
-  id: string;
-  name: String;
-  email: String;
-  password: String;
-  role: String;
-  imageUrl: String;
-}
+
 
 const userModel = {
 
