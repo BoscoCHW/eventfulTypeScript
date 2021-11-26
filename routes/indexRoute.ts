@@ -40,7 +40,10 @@ router.get(
       sessionsArray.push(session);
     }
 
-    return res.render("admin/dashboard", { user: req.user, sessions: sessionsArray });
+    return res.render("admin/dashboard", {
+      user: req.user,
+      sessions: sessionsArray,
+    });
   }
 );
 
